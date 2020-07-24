@@ -58,7 +58,6 @@
     </pluginRepository>
   </pluginRepositories>
 
-
   <profiles>
     <profile>
       <id>graal</id>
@@ -71,8 +70,19 @@
             <configuration>
               <imageName>${project.artifactId}</imageName>
               <buildArgs>
-                -Dspring.graal.mode=initialization-only -Dspring.graal.dump-config=/tmp/computed-reflect-config.json -Dspring.graal.verbose=true
+                -Dspring.graal.mode=initialization-only -Dspring.graal.verbose=true  
               </buildArgs>
+              <!--<buildArgs>
+                -H:IncludeResourceBundles=javax.servlet.http.LocalStrings
+                -Dspring.native.mode=agent
+              </buildArgs>-->
+              <!--<buildArgs>
+                -Dspring.graal.mode=initialization-only -Dspring.graal.dump-config=/tmp/computed-reflect-config.json -Dspring.graal.verbose=true -H:EnableURLProtocols=http 
+              </buildArgs>-->
+              <!--<buildArgs>
+                -H:+PrintAOTCompilation -H:+PrintHeapHistogram -H:EnableURLProtocols=http -Dspring.native.mode=hybrid -Dspring.backgroundpreinitializer.ignore=true
+                -Dspring.spel.ignore=true -Dspring.native.remove-yaml-support=true -Dspring.xml.ignore=true
+              </buildArgs>-->
             </configuration>
             <executions>
               <execution>

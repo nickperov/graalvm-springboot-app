@@ -6,6 +6,7 @@ Study project to lear GraalVM and ways to use it with spring including native-im
 Resources used:
  * https://www.graalvm.org/getting-started/
  * https://spring.io/blog/2020/04/16/spring-tips-the-graalvm-native-image-builder-feature
+ * https://repo.spring.io/milestone/org/springframework/experimental/spring-graalvm-native-docs/0.7.1/spring-graalvm-native-docs-0.7.1.zip!/reference/index.html
 
 ## Prerequisites
  * Maven installed;

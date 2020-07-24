@@ -17,17 +17,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-indexer</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.tomcat.embed</groupId>
+          <artifactId>tomcat-embed-websocket</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
-    <!--    <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
