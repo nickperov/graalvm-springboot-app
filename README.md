@@ -33,6 +33,7 @@ Run application with native image agent:
 
     java -agentlib:native-image-agent=config-output-dir=${MI}/native-image -jar target/${module_name}.jar
 
+Call application APIs.
 Stop the running application.
 META-INF.native-image should contain next files: 
 

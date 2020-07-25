@@ -14,13 +14,13 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <!--<start-class>com.nickperov.stud.graalvm.spring_reactive.ReactiveApplication</start-class>-->
     <java.version>11</java.version>
   </properties>
 
 
   <modules>
     <module>graalvm-springboot-hello_world</module>
+    <module>graalvm-springboot-h2-rest</module>
   </modules>
 
   <dependencies>
@@ -70,7 +70,9 @@
             <configuration>
               <imageName>${project.artifactId}</imageName>
               <buildArgs>
-                -Dspring.graal.mode=initialization-only -Dspring.graal.verbose=true  
+                --no-server --no-fallback --verbose
+                -Dspring.native.mode=agent -Dspring.graal.mode=initialization-only -Dspring.graal.verbose=true
+                -Dspring.graal.remove-unused-autoconfig=true -Dspring.native.remove-jmx-support=true -Dspring.graal.remove-yaml-support=true -Dspring.spel.ignore=true
               </buildArgs>
               <!--<buildArgs>
                 -H:IncludeResourceBundles=javax.servlet.http.LocalStrings
