@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.nickperov.stud</groupId>
+    <artifactId>graalvm-sprinboot</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>graalvm-springboot-h2-rest</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <java.version>11</java.version>
+    <start-class>com.nickperov.stud.graalvm.spring.h2_rest.H2DBApp</start-class>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>net.bytebuddy</groupId>
+          <artifactId>byte-buddy</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.javassist</groupId>
+          <artifactId>javassist</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>graal</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.nativeimage</groupId>
+            <artifactId>native-image-maven-plugin</artifactId>
+            <version>20.1.0</version>
+            <configuration>
+              <imageName>${project.artifactId}</imageName>
+              <buildArgs>
+                --no-server --no-fallback --verbose 
+                -Dspring.native.mode=feature
+                -H:+RemoveSaturatedTypeFlows -H:EnableURLProtocols=http
+                -H:ReflectionConfigurationFiles=${pom.basedir}/src/main/resources/reflection-config.json 
+                -Dspring.native.remove-yaml-support=true -Dspring.native.remove-jmx-support=true -Dspring.spel.ignore=true -Dspring.xml.ignore=true 
+              </buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>native-image</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <!--      <plugin>
+              <groupId>org.springframework.experimental</groupId>
+              <artifactId>spring-graalvm-library-optimizer</artifactId>
+              <version>0.8.0-SNAPSHOT</version>
+              <executions>
+                <execution>
+                  <id>remove-apache-tomcat-reflection</id>
+                  <goals>
+                    <goal>spring-graalvm-remove-apache-tomcat-reflection</goal>
+                  </goals>
+                  <configuration>
+                    <enabled>true</enabled>
+                    <generatedSourcesLocation>generated/src/main/java/</generatedSourcesLocation>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>optimize-apache-tomcat-embed-core</id>
+                  <goals>
+                    <goal>spring-graalvm-optimize-apache-tomcat</goal>
+                  </goals>
+                  <configuration>
+                    <enabled>true</enabled>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>-->
+      <!--      <plugin>
+              <groupId>org.hibernate.orm.tooling</groupId>
+              <artifactId>hibernate-enhance-maven-plugin</artifactId>
+              <version>${hibernate.version}</version>
+              <executions>
+                <execution>
+                  <configuration>
+                    <failOnError>true</failOnError>
+                    <enableLazyInitialization>true</enableLazyInitialization>
+                    <enableDirtyTracking>true</enableDirtyTracking>
+                    <enableAssociationManagement>true</enableAssociationManagement>
+                    <enableExtendedEnhancement>false</enableExtendedEnhancement>
+                  </configuration>
+                  <goals>
+                    <goal>enhance</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>-->
+    </plugins>
+  </build>
+</project>

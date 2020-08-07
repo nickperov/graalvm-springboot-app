@@ -16,6 +16,8 @@ Resources used:
 
 
 ## Build instructions
+
+### Build in agent mode (-Dspring.native.mode=agent)
 Go to module:
 
     sd {module_name}
@@ -45,6 +47,14 @@ Run build with graal profile
 
     mvn -Pgraal clean package
 
+### Build in feature mode (-Dspring.native.mode=feature)
+Run maven build:
+
+    mvn -DskipTests=true clean package
+    
+or use native-image tool:
+
+    ./compile.sh
 
 ## Authors
 Nikolay Perov

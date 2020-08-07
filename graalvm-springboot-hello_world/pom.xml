@@ -14,33 +14,38 @@
   <properties>
     <start-class>com.nickperov.stud.graalvm.spring.hello_world.HelloWorldApp</start-class>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-indexer</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.tomcat.embed</groupId>
-          <artifactId>tomcat-embed-websocket</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.junit.vintage</groupId>
-          <artifactId>junit-vintage-engine</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
+  <profiles>
+    <profile>
+      <id>graal</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.nativeimage</groupId>
+            <artifactId>native-image-maven-plugin</artifactId>
+            <version>20.1.0</version>
+            <configuration>
+              <imageName>${project.artifactId}</imageName>
+              <buildArgs>
+                --no-server --no-fallback --verbose
+                -Dspring.native.mode=agent -Dspring.graal.mode=initialization-only -Dspring.graal.verbose=true
+                -Dspring.graal.remove-unused-autoconfig=true -Dspring.native.remove-jmx-support=true -Dspring.graal.remove-yaml-support=true -Dspring.spel.ignore=true
+              </buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>native-image</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
