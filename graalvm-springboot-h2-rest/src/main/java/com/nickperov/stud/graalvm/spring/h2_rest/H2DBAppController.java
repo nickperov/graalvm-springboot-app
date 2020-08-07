@@ -31,15 +31,15 @@ public class H2DBAppController {
         return new NoteDTO(noteRepository.getOne(id));
     }
 
-    @PostMapping("/note")
+    /*@PostMapping("/note")
     public String addNote(@RequestBody final String note) {
         return "Reply to note " + note;
-    }
+    }*/
     
-    /*@PostMapping("/note")
+    @PostMapping("/note")
     public void addNote(@RequestBody final NoteDTO note) {
         noteRepository.save(new NoteEntity(note));
-    }*/
+    }
 
     @GetMapping("/notes")
     public List<NoteDTO> listNotes() {
